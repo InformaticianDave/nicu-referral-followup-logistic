@@ -1,0 +1,49 @@
+# --- De-identification / PHI safety net ---
+# Never allow raw EHR extracts, Epic/Clarity exports, or REDCap pulls into version control.
+*raw*data*
+*rawdata*
+*clarity*extract*
+*epic*export*
+*redcap*export*
+*mrn*
+*patient_id*
+*vernov*
+*_PHI_*
+Post_Clean_VernovData.csv
+*.csv.bak
+
+# Allow the checked-in synthetic/test fixtures explicitly
+!data/synthetic/**
+!tests/**
+!docs/**
+!config/**
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+build/
+dist/
+
+# --- R ---
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# --- Outputs (generated, not source) ---
+outputs/**
+!outputs/**/.gitkeep
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
