@@ -4,8 +4,8 @@
 # mode/median imputation, caret dummy-encoding + center/scale, a
 # class-weighted glm(), train/test AUC, and an OR/CI/p-value table.
 #
-# NOTE: results_df construction below fails to parse -- see git history
-# for the fix. Kept here, uncommented, as a record of the bug.
+# Odds-ratio / 95% CI / p-value table, sorted by significance, ranked
+# top-20 for a clinician-facing summary.
 
 library(readr)
 library(dplyr)
@@ -139,10 +139,10 @@ results_df <- data.frame(
 )
 results_df$OddsRatio <- exp(results_df$Coefficient)
 
-# BUG: `95% CI Lower` / `95% CI Upper` are non-syntactic names used here as
-# bare argument names -- R parses `%` as modulo and the leading digit/space
-# as invalid, so this line throws "unexpected symbol" before it ever runs.
-cis_df <- data.frame(Feature = rownames(cis), 95% CI Lower = cis[, 1], 95% CI Upper = cis[, 2])
+# FIX (2025-08-20): `95% CI Lower` / `95% CI Upper` are non-syntactic
+# names (leading space, percent sign, digit) -- they must be backticked
+# to be used as argument names in data.frame().
+cis_df <- data.frame(Feature = rownames(cis), `95% CI Lower` = cis[, 1], `95% CI Upper` = cis[, 2], check.names = FALSE)
 results_df <- merge(results_df, cis_df, by = "Feature", all.x = TRUE)
 
 results_df$Feature <- gsub("`", "", results_df$Feature)
@@ -157,7 +157,7 @@ test_probs <- predict(logreg_model, newdata = df_test_processed %>% select(-all_
 auc_score <- auc(roc(df_test[[target_col]], test_probs))
 
 top_20_results <- results_df %>%
-  select(Feature, OddsRatio, 95% CI Lower, 95% CI Upper, PValue) %>%
+  select(Feature, OddsRatio, `95% CI Lower`, `95% CI Upper`, PValue) %>%
   head(20)
 
 cat("\n--- Model Performance ---\n")
