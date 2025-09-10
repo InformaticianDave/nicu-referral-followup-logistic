@@ -1,0 +1,73 @@
+# Predictor grouping and reference categories for the bootstrapped
+# logistic regression pipeline. Three domains, reported separately,
+# per clinician preference (easier to read than one 60-row table).
+
+outcomes:
+  Referred_vs_NotReferred:
+    positive_label: Referred
+    negative_label: NotReferred
+  Followup_vs_LTFU:
+    positive_label: Followup
+    negative_label: LTFU
+
+clinical_continuous:
+  - name: GA
+    label: Gestational age (weeks)
+  - name: delivery_bw
+    label: Birth weight (g)
+  - name: Length_of_stay
+    label: Length of stay (days)
+  - name: ageatdc
+    label: Age at discharge (days)
+  - name: dc_eiatdc
+    label: Early intervention referrals at discharge (count)
+  - name: dc_ptotatdc
+    label: PT/OT referrals at discharge (count)
+
+clinical_categorical:
+  - name: delivery_inborn_outborn
+    reference: Inborn
+  - name: delivery_singlevsmultiple
+    reference: Singleton
+  - name: dc_dispo
+    reference: Home
+  - name: patientinfo_sex
+    reference: Female
+  - name: pmd_in_system
+    reference: "Yes"
+  - name: dc_wcconnect
+    reference: "Yes"
+  - name: outpt_vv_vs_inperson_fup
+    reference: In-person
+  - name: outpt_dd
+    reference: "No"
+  - name: graduate
+    reference: "Yes"
+
+sociodemographic:
+  - name: coi
+    label: Child Opportunity Index
+    ordinal: true
+    levels: [Very low, Low, Moderate, High, Very high]
+  - name: Insurance_type
+    reference: Public
+  - name: patientinfo_interpneed
+    reference: "No"
+  - name: mat_birthplace
+    reference: US
+  - name: maternal_education
+    reference: High school or less
+  - name: mat_employed_during_pregnancy
+    reference: "Yes"
+  - name: Race_maternal
+    reference: White
+  - name: Ethnicity_maternal
+    reference: Not Hispanic/Latino
+  - name: pat_place_of_birth
+    reference: US
+  - name: Race_paternal
+    reference: White
+  - name: Ethnicity_paternal
+    reference: Not Hispanic/Latino
+  - name: Race_patient
+    reference: White
